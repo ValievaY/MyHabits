@@ -9,11 +9,9 @@ import UIKit
 
 class HabitDetailsViewController: UIViewController {
     
-    var habitView = HabitViewController()
-    
     var habit = Habit(name: "", date: Date(), color: UIColor.clear)
     
-    lazy var tableView: UITableView = {
+    private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.dataSource = self
         tableView.delegate = self
@@ -62,26 +60,15 @@ class HabitDetailsViewController: UIViewController {
     }
     
     @objc func editHabit() {
+        let habitView = HabitViewController()
         let navController = UINavigationController(rootViewController: habitView)
         navController.modalPresentationStyle = .fullScreen
-        let save = UIBarButtonItem(title: "Cохранить", style: .plain, target: self, action: #selector(saveHabit))
-        save.tintColor = UIColor(named: "CustomViolet")
-        habitView.navigationItem.rightBarButtonItem = save
         habitView.navigationItem.title = "Править"
-        habitView.textField.text = self.navigationItem.title
+        habitView.textField.text = habit.name
+        habitView.index = HabitsStore.shared.habits.firstIndex(where: {($0.name == habit.name)}) ?? 0
         habitView.deleteLabel.isHidden = false
+        habitView.delegate = self
         self.present(navController, animated: true)
-    }
-    
-    @objc private func saveHabit() {
-        if let i = HabitsStore.shared.habits.firstIndex(where: {($0.name == self.navigationItem.title)}) {
-            HabitsStore.shared.habits[i].name = habitView.textField.text ?? "No text"
-            HabitsStore.shared.habits[i].date = habitView.datePicker.date
-            HabitsStore.shared.habits[i].color = habitView.colorView.backgroundColor ?? .orange
-        }
-        HabitsStore.shared.save()
-        self.navigationItem.title = habitView.textField.text
-        self.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -105,5 +92,11 @@ extension HabitDetailsViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "АКТИВНОСТЬ"
+    }
+}
+
+extension HabitDetailsViewController: HabitButtonDelegate {
+    func popToRoot() {
+        self.navigationController?.popToRootViewController(animated: false)
     }
 }

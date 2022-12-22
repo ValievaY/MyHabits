@@ -9,8 +9,6 @@ import UIKit
 
 class HabitsViewController: UIViewController {
     
-    var habit = HabitViewController()
-    
     private lazy var layout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -20,7 +18,7 @@ class HabitsViewController: UIViewController {
         return layout
     }()
     
-    lazy var collectionView: UICollectionView = {
+   private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.layout)
         collectionView.register(ProgressCollectionViewCell.self, forCellWithReuseIdentifier: "ProgressCollectionViewCell")
         collectionView.register(HabitCollectionViewCell.self, forCellWithReuseIdentifier: "HabitCollectionViewCell")
@@ -65,22 +63,12 @@ class HabitsViewController: UIViewController {
     }
     
     @objc func newHabit() {
+        let habit = HabitViewController()
         let navController = UINavigationController(rootViewController: habit)
         navController.modalPresentationStyle = .fullScreen
-        let save = UIBarButtonItem(title: "Cохранить", style: .plain, target: self, action: #selector(saveHabit))
-        save.tintColor = UIColor(named: "CustomViolet")
-        habit.navigationItem.rightBarButtonItem = save
         habit.navigationItem.title = "Создать"
         habit.deleteLabel.isHidden = true
         self.present(navController, animated: true)
-    }
-    
-    @objc private func saveHabit() {
-        let newHabit = Habit(name: habit.textField.text ?? "No text", date: habit.datePicker.date, color: habit.colorView.backgroundColor ?? .orange)
-        let store = HabitsStore.shared
-        store.habits.append(newHabit)
-        HabitsStore.shared.save()
-        habit.dismiss(animated: true, completion: nil)
     }
     
     @objc func tapButton(sender:UIButton) {

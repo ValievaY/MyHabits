@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		551FDAF72930E99B00581B08 /* HabitDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551FDAF62930E99B00581B08 /* HabitDetailsViewController.swift */; };
+		551FDB592952664D00581B08 /* HabitButtonDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551FDB582952664D00581B08 /* HabitButtonDelegate.swift */; };
 		55558BF629214699006CCE2E /* ProgressCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55558BF529214699006CCE2E /* ProgressCollectionViewCell.swift */; };
 		55558BF8292236E7006CCE2E /* HabitCollectionViewCell .swift in Sources */ = {isa = PBXBuildFile; fileRef = 55558BF7292236E7006CCE2E /* HabitCollectionViewCell .swift */; };
 		55DE6F2A291933B800DBBCA7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DE6F29291933B800DBBCA7 /* AppDelegate.swift */; };
@@ -44,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		551FDAF62930E99B00581B08 /* HabitDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitDetailsViewController.swift; sourceTree = "<group>"; };
+		551FDB582952664D00581B08 /* HabitButtonDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitButtonDelegate.swift; sourceTree = "<group>"; };
 		55558BF529214699006CCE2E /* ProgressCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressCollectionViewCell.swift; sourceTree = "<group>"; };
 		55558BF7292236E7006CCE2E /* HabitCollectionViewCell .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HabitCollectionViewCell .swift"; sourceTree = "<group>"; };
 		55DE6F26291933B800DBBCA7 /* MyHabits.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyHabits.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -123,6 +125,7 @@
 				55558BF529214699006CCE2E /* ProgressCollectionViewCell.swift */,
 				55558BF7292236E7006CCE2E /* HabitCollectionViewCell .swift */,
 				551FDAF62930E99B00581B08 /* HabitDetailsViewController.swift */,
+				551FDB582952664D00581B08 /* HabitButtonDelegate.swift */,
 				55DE6F5D2919375900DBBCA7 /* HabitsStore.swift */,
 				55DE6F32291933BB00DBBCA7 /* Assets.xcassets */,
 				55DE6F34291933BB00DBBCA7 /* LaunchScreen.storyboard */,
@@ -285,6 +288,7 @@
 				551FDAF72930E99B00581B08 /* HabitDetailsViewController.swift in Sources */,
 				55DE6F66291BB1CD00DBBCA7 /* HabitViewController.swift in Sources */,
 				55DE6F602919380800DBBCA7 /* TabBarController.swift in Sources */,
+				551FDB592952664D00581B08 /* HabitButtonDelegate.swift in Sources */,
 				55558BF629214699006CCE2E /* ProgressCollectionViewCell.swift in Sources */,
 				55DE6F5E2919375900DBBCA7 /* HabitsStore.swift in Sources */,
 				55DE6F642919387700DBBCA7 /* InfoViewController.swift in Sources */,

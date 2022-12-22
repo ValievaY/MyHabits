@@ -66,7 +66,7 @@ class HabitViewController: UIViewController {
         return textField
     }()
     
-    lazy var colorView: UIView = {
+    private lazy var colorView: UIView = {
         let colorView = UIView()
         colorView.layer.cornerRadius = 25
         colorView.clipsToBounds = true
@@ -76,7 +76,7 @@ class HabitViewController: UIViewController {
         return colorView
     }()
     
-    lazy var textTimeLabel: UILabel = {
+    private lazy var textTimeLabel: UILabel = {
         let textTimeLabel = UILabel()
         textTimeLabel.tag = 0
         textTimeLabel.text = "Каждый день в "
@@ -86,7 +86,7 @@ class HabitViewController: UIViewController {
         return textTimeLabel
     }()
     
-    lazy var timeLabel: UILabel = {
+    private lazy var timeLabel: UILabel = {
         let timeLabel = UILabel()
         timeLabel.tag = 1
         timeLabel.text = "11:00 PM"
@@ -102,7 +102,7 @@ class HabitViewController: UIViewController {
         return colorPicker
     }()
     
-    lazy var datePicker: UIDatePicker = {
+   private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.datePickerMode = .time
@@ -121,7 +121,11 @@ class HabitViewController: UIViewController {
         return deleteLabel
     }()
     
-    let alert = UIAlertController(title: "Удалить привычку", message: "", preferredStyle: .alert)
+    weak var delegate: HabitButtonDelegate?
+    
+    var index = 0
+    
+    private let alert = UIAlertController(title: "Удалить привычку", message: "", preferredStyle: .alert)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,10 +158,14 @@ class HabitViewController: UIViewController {
         stackViewHorizontal.addArrangedSubview(timeLabel)
     }
     
-    private func setupNavBar(){
-        let cancel = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(cancelHabit))
-        cancel.tintColor = UIColor(named: "CustomViolet")
-        self.navigationItem.leftBarButtonItem = cancel
+    private func setupNavBar() {
+        let saveButton = UIBarButtonItem(title: "Cохранить", style: .plain, target: self, action: #selector(didTapSaveButton))
+        saveButton.tintColor = UIColor(named: "CustomViolet")
+        self.navigationItem.rightBarButtonItem = saveButton
+        
+        let cancelButton = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(didTapCancelButton))
+        cancelButton.tintColor = UIColor(named: "CustomViolet")
+        self.navigationItem.leftBarButtonItem = cancelButton
     }
     
     private func setupConstraints() {
@@ -209,12 +217,9 @@ class HabitViewController: UIViewController {
         
         alert.addAction(UIAlertAction(title: "Удалить", style: .destructive, handler: {
             _ in
-            HabitsStore.shared.habits.removeAll(where: ({$0.name == self.textField.text}))
+            HabitsStore.shared.habits.remove(at: self.index)
             HabitsStore.shared.save()
-            let habitsViewController = HabitsViewController()
-            let navController = UINavigationController(rootViewController: habitsViewController)
-            navController.modalPresentationStyle = .fullScreen
-            self.present(navController, animated: true)
+            self.dismiss(animated: false, completion: {self.delegate?.popToRoot()})
         }))
     }
     
@@ -228,11 +233,31 @@ class HabitViewController: UIViewController {
         self.timeLabel.text = choosedTime.string(from: self.datePicker.date)
     }
     
+    @objc private func didTapSaveButton() {
+        if self.navigationItem.title == "Создать" {
+            let newHabit = Habit(name: textField.text ?? "No text",
+                                 date: datePicker.date,
+                                 color: colorView.backgroundColor ?? .orange)
+       
+                HabitsStore.shared.habits.append(newHabit)
+                HabitsStore.shared.save()
+                self.dismiss(animated: true, completion: nil)
+            
+        } else {
+                HabitsStore.shared.habits[index].name = textField.text ?? "No text"
+                HabitsStore.shared.habits[index].date = datePicker.date
+                HabitsStore.shared.habits[index].color = colorView.backgroundColor ?? .orange
+            
+            HabitsStore.shared.save()
+            self.dismiss(animated: false, completion: {self.delegate?.popToRoot()})
+        }
+    }
+    
     @objc private func didTapDeleteLabel(_ gestureRecognizer: UITapGestureRecognizer) {
         self.present(alert, animated: true, completion: nil)
     }
     
-    @objc private func cancelHabit() {
+    @objc private func didTapCancelButton() {
         self.dismiss(animated: true, completion: nil)
     }
     
